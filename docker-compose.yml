@@ -1,0 +1,81 @@
+services:
+  api_gateway:
+    build: ./api_gateway
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api_gateway/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3000
+    depends_on:
+      - nats
+      - postgres_db
+    networks:
+      - microservices_network
+
+  users_microservice:
+    build: ./users_microservice
+    volumes:
+      - ./users_microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - DATABASE_URL=postgres://testuser:testuser123@postgres_db:5432/users_db
+    depends_on:
+      - nats
+      - postgres_db
+    networks:
+      - microservices_network
+
+  courses_microservice:
+    build: ./courses_microservice
+    volumes:
+      - ./courses_microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - DATABASE_URL=postgres://testuser:testuser123@postgres_db:5432/courses_db
+    depends_on:
+      - nats
+      - postgres_db
+    networks:
+      - microservices_network
+
+  profile_microservice:
+    build: ./profile_microservice
+    volumes:
+      - ./profile_microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - DATABASE_URL=postgres://testuser:testuser123@postgres_db:5432/profile_db
+    depends_on:
+      - nats
+      - postgres_db
+    networks:
+      - microservices_network
+
+  nats:
+    image: nats
+    ports:
+      - "4222:4222"
+    networks:
+      - microservices_network
+
+  postgres_db:
+    image: postgres
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testuser123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh  # Run initialization script
+    networks:
+      - microservices_network
+
+volumes:
+  postgres_data:
+
+networks:
+  microservices_network:
+    driver: bridge
