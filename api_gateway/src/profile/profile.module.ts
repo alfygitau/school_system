@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { NatsClientModule } from 'src/nats-client/nats-client.module';
-import { ProfilesController } from './profile.controller';
+import { ProfileController } from './profile.controller';
 
 @Module({
   imports: [NatsClientModule],
-  controllers: [ProfilesController],
+  controllers: [ProfileController],
   providers: [],
 })
 export class ProfileModule {}

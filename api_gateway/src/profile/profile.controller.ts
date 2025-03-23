@@ -11,7 +11,7 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 
 @Controller('profile')
-export class ProfilesController {
+export class ProfileController {
   constructor(
     @Inject('NATS_SERVICE') private readonly natsClient: ClientProxy,
   ) {}
