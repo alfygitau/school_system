@@ -42,4 +42,12 @@ export class CoursesController {
   deleteCourse(@Param('id') id: string) {
     return this.natsClient.send({ cmd: 'delete_course' }, { id });
   }
+
+  @Post('units')
+  async addUnitsToCourse(@Body() payload: any) {
+    return this.natsClient.send(
+      { cmd: 'add_units_to_course' },
+      { courseId: payload.courseId, unitIds: payload.unitIds },
+    );
+  }
 }

@@ -3,9 +3,11 @@ export class CreateUnitDto {
 
   code: string; // Unique unit code (e.g., "CSU101")
 
-  description: string; // Brief description of the unit
+  description?: string; // Brief description of the unit
 
   creditHours: number; // Number of credit hours for this unit
 
   status: string; // Unit status (e.g., "active", "inactive")
+
+  courseId: string; // Unit status (e.g., "active", "inactive")
 }

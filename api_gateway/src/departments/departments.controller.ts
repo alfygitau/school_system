@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateDepartmentDto } from 'src/faculty/dtos/CreateDepartment.dto';
-import { UpdateDepartmentDto } from 'src/faculty/dtos/UpdateDepartment.dto';
 
 @Controller('departments')
 export class DepartmentsController {

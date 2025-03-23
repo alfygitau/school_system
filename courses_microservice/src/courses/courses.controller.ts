@@ -6,10 +6,9 @@ import { UpdateCourseDto } from 'src/dtos/UpdateCourse.dto';
 import { UpdateFacultyDto } from 'src/dtos/UpdateFaculty';
 import { CreateFacultyDto } from 'src/dtos/CreateFaculty';
 import { CreateDepartmentDto } from 'src/dtos/CreateDepartment.dto';
-import {
-  NewUpdateDepartmentDto,
-  UpdateDepartmentDto,
-} from 'src/dtos/UpdateDepartment.dto';
+import { CreateUnitDto } from 'src/dtos/CreateUnit.dto';
+import { UpdateUnitDto } from 'src/dtos/UpdateUnit.dto';
+import { CreateCourseUnitsDto } from 'src/dtos/CreateCourseUnits.dto';
 
 @Controller()
 export class CoursesController {
@@ -38,6 +37,12 @@ export class CoursesController {
   @MessagePattern({ cmd: 'delete_course' })
   deleteCourse(@Payload() payload: { id: string }) {
     return this.coursesService.delete(payload.id);
+  }
+
+  // Route for adding units to a course
+  @MessagePattern({ cmd: 'add_units_to_course' })
+  async addUnitsToCourse(@Payload() payload: CreateCourseUnitsDto) {
+    return this.coursesService.addUnitsToCourse(payload.courseId, payload.unitIds);
   }
 
   //   faculty routes
@@ -93,5 +98,32 @@ export class CoursesController {
   @MessagePattern({ cmd: 'delete_department' })
   deleteDepartment(@Payload() payload: { id: string }) {
     return this.coursesService.removeDepartment(payload.id);
+  }
+
+
+  // Units CRUD
+  @MessagePattern({ cmd: 'create_unit' })
+  createUnit(@Payload() payload: CreateUnitDto) {
+    return this.coursesService.createUnit(payload);
+  }
+
+  @MessagePattern({ cmd: 'get_all_units' })
+  getAllUnits() {
+    return this.coursesService.findAllUnits();
+  }
+
+  @MessagePattern({ cmd: 'get_unit_by_id' })
+  getUnitById(@Payload() payload: { id: string }) {
+    return this.coursesService.findOneUnit(payload.id);
+  }
+
+  @MessagePattern({ cmd: 'update_unit' })
+  updateUnit(@Payload() payload: { id: string; data: UpdateUnitDto }) {
+    return this.coursesService.updateUnit(payload.id, payload.data);
+  }
+
+  @MessagePattern({ cmd: 'delete_unit' })
+  deleteUnit(@Payload() payload: { id: string }) {
+    return this.coursesService.removeUnit(payload.id);
   }
 }

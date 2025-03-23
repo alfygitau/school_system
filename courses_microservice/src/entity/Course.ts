@@ -31,7 +31,7 @@ export class Course {
   @Column({ default: 'active' })
   status: string;
   
-  @OneToMany(() => Unit, (unit) => unit.code, { cascade: true })
+  @OneToMany(() => Unit, (unit) => unit.course, { cascade: true })
   units: Unit[]; // List of units within this course
 
   @CreateDateColumn()

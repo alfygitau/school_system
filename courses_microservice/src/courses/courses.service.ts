@@ -2,14 +2,17 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateDepartmentDto } from 'src/dtos/CreateDepartment.dto';
 import { CreateFacultyDto } from 'src/dtos/CreateFaculty';
+import { CreateUnitDto } from 'src/dtos/CreateUnit.dto';
 import {
   NewUpdateDepartmentDto,
   UpdateDepartmentDto,
 } from 'src/dtos/UpdateDepartment.dto';
 import { UpdateFacultyDto } from 'src/dtos/UpdateFaculty';
+import { UpdateUnitDto } from 'src/dtos/UpdateUnit.dto';
 import { Course } from 'src/entity/Course';
 import { Department } from 'src/entity/Department';
 import { Faculty } from 'src/entity/Faculty';
+import { Unit } from 'src/entity/Unit';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -21,6 +24,8 @@ export class CoursesService {
     private readonly facultyRepository: Repository<Faculty>,
     @InjectRepository(Department)
     private readonly departmentRepository: Repository<Department>,
+    @InjectRepository(Unit)
+    private readonly unitRepository: Repository<Unit>,
   ) {}
 
   async create(data: Partial<Course>) {
@@ -29,7 +34,7 @@ export class CoursesService {
   }
 
   async findAll() {
-    return this.courseRepository.find();
+    return this.courseRepository.find({ relations: ['units'] });
   }
 
   async findOne(id: string) {
@@ -49,6 +54,24 @@ export class CoursesService {
   async delete(id: string) {
     const course = await this.findOne(id);
     return this.courseRepository.remove(course);
+  }
+
+  async addUnitsToCourse(courseId: string, unitIds: string[]): Promise<Course> {
+    const course = await this.courseRepository.findOne({
+      where: { id: courseId },
+      relations: ['units'],
+    });
+
+    if (!course) {
+      throw new Error('Course not found');
+    }
+
+    const units = await this.unitRepository.findByIds(unitIds);
+    if (units.length !== unitIds.length) {
+      throw new Error('Some units not found');
+    }
+    course.units.push(...units);
+    return this.courseRepository.save(course);
   }
 
   //faculty routes
@@ -136,5 +159,49 @@ export class CoursesService {
 
   async removeDepartment(id: string): Promise<void> {
     await this.departmentRepository.delete(id);
+  }
+
+  // Create a unit
+  async createUnit(createUnitDto: CreateUnitDto): Promise<Unit> {
+    const { courseId, ...unitData } = createUnitDto;
+    const course = await this.courseRepository.findOne({
+      where: { id: courseId },
+    });
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+
+    const unit = this.unitRepository.create({ ...unitData, course });
+    return this.unitRepository.save(unit);
+  }
+
+  // Get all units
+  async findAllUnits(): Promise<Unit[]> {
+    return this.unitRepository.find({ relations: ['course'] });
+  }
+
+  // Get a single unit by ID
+  async findOneUnit(id: string): Promise<Unit> {
+    const unit = await this.unitRepository.findOne({
+      where: { id },
+      relations: ['course'],
+    });
+    if (!unit) {
+      throw new NotFoundException('Unit not found');
+    }
+    return unit;
+  }
+
+  // Update a unit
+  async updateUnit(id: string, updateUnitDto: UpdateUnitDto): Promise<Unit> {
+    const unit = await this.findOneUnit(id);
+    Object.assign(unit, updateUnitDto);
+    return this.unitRepository.save(unit);
+  }
+
+  // Delete a unit
+  async removeUnit(id: string): Promise<void> {
+    const unit = await this.findOneUnit(id);
+    await this.unitRepository.remove(unit);
   }
 }

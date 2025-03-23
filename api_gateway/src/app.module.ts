@@ -12,6 +12,8 @@ import { FacultyModule } from './faculty/faculty.module';
 import { FacultyController } from './faculty/faculty.controller';
 import { DepartmentsModule } from './departments/departments.module';
 import { DepartmentsController } from './departments/departments.controller';
+import { UnitsModule } from './unit/units.module';
+import { UnitsController } from './unit/units.controller';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { DepartmentsController } from './departments/departments.controller';
     CoursesModule,
     FacultyModule,
     DepartmentsModule,
+    UnitsModule,
   ],
   controllers: [
     UsersController,
@@ -30,6 +33,7 @@ import { DepartmentsController } from './departments/departments.controller';
     CoursesController,
     FacultyController,
     DepartmentsController,
+    UnitsController,
   ],
   providers: [],
 })
