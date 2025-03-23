@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Unit } from './Unit';
 
 @Entity()
 export class Course {
@@ -27,7 +29,10 @@ export class Course {
   department: string; // Associated department (e.g., "Computer Science")
 
   @Column({ default: 'active' })
-  status: string; // Course status (e.g., "active", "inactive", "archived")
+  status: string;
+  
+  @OneToMany(() => Unit, (unit) => unit.code, { cascade: true })
+  units: Unit[]; // List of units within this course
 
   @CreateDateColumn()
   createdAt: Date; // Timestamp when course is created

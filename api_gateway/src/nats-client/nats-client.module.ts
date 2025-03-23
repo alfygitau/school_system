@@ -9,8 +9,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         transport: Transport.NATS,
         options: {
           servers: ['nats://nats'],
-          reconnect: true, // Enable reconnect
-          maxReconnectAttempts: -1, // Infinite reconnect attempts
+          reconnect: true,
+          maxReconnectAttempts: -1,
           reconnectTimeWait: 5000,
         },
       },
@@ -23,8 +23,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         transport: Transport.NATS,
         options: {
           servers: ['nats://nats'],
-          reconnect: true, // Enable reconnect
-          maxReconnectAttempts: -1, // Infinite reconnect attempts
+          reconnect: true,
+          maxReconnectAttempts: -1,
           reconnectTimeWait: 5000,
         },
       },

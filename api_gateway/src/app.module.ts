@@ -8,6 +8,10 @@ import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/auth.controller';
 import { CoursesModule } from './courses/courses.module';
 import { CoursesController } from './courses/courses.controller';
+import { FacultyModule } from './faculty/faculty.module';
+import { FacultyController } from './faculty/faculty.controller';
+import { DepartmentsModule } from './departments/departments.module';
+import { DepartmentsController } from './departments/departments.controller';
 
 @Module({
   imports: [
@@ -16,12 +20,16 @@ import { CoursesController } from './courses/courses.controller';
     ProfileModule,
     AuthModule,
     CoursesModule,
+    FacultyModule,
+    DepartmentsModule,
   ],
   controllers: [
     UsersController,
     ProfileController,
     AuthController,
     CoursesController,
+    FacultyController,
+    DepartmentsController,
   ],
   providers: [],
 })
