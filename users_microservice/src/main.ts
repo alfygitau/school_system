@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { RpcExceptionFilter } from './error/errorHandler';
+import { AllExceptionFilter } from './error/microservice.exception';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -13,6 +13,7 @@ async function bootstrap() {
       },
     },
   );
+  app.useGlobalFilters(new AllExceptionFilter());
   console.log('🚀 Users Microservice is listening...');
   await app.listen();
 }

@@ -13,6 +13,7 @@ services:
       - postgres_db
     networks:
       - microservices_network
+    restart: unless-stopped
 
   users_microservice:
     build: ./users_microservice
@@ -26,6 +27,7 @@ services:
       - postgres_db
     networks:
       - microservices_network
+    restart: unless-stopped
 
   courses_microservice:
     build: ./courses_microservice
@@ -39,6 +41,7 @@ services:
       - postgres_db
     networks:
       - microservices_network
+    restart: unless-stopped
 
   profile_microservice:
     build: ./profile_microservice
@@ -52,6 +55,7 @@ services:
       - postgres_db
     networks:
       - microservices_network
+    restart: unless-stopped
 
   nats:
     image: nats
@@ -59,6 +63,7 @@ services:
       - "4222:4222"
     networks:
       - microservices_network
+    restart: unless-stopped
 
   postgres_db:
     image: postgres
@@ -69,9 +74,10 @@ services:
       - POSTGRES_PASSWORD=testuser123
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh  # Run initialization script
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     networks:
       - microservices_network
+    restart: unless-stopped
 
 volumes:
   postgres_data:

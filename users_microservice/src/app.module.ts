@@ -3,6 +3,7 @@ import { UsersModule } from './users/users.module';
 import { NatsClientModule } from './nats-client/nats-client.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/User';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { User } from './entities/User';
       password: 'testuser123',
     }),
     UsersModule,
+    AuthModule,
     NatsClientModule,
   ],
   controllers: [],

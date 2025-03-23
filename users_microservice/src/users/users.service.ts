@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/User';
 import { Repository } from 'typeorm';
@@ -14,10 +14,17 @@ export class UsersService {
   ) {}
 
   async createUser(user: CreateUserDto) {
-    // Generate salt
-    const salt = await bcrypt.genSalt(10);
+    // Check if user already exists
+    const existingUser = await this.usersRepository.findOne({
+      where: { email: user.email },
+    });
 
-    // Hash the password
+    if (existingUser) {
+      throw new ConflictException('User with this email already exists');
+    }
+
+    // Generate salt and hash password
+    const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
 
     // Create and save user

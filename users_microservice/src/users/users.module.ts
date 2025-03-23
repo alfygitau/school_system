@@ -9,5 +9,6 @@ import { User } from 'src/entities/User';
   imports: [TypeOrmModule.forFeature([User]), NatsClientModule],
   controllers: [UsersMicroserviceController],
   providers: [UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}
