@@ -46,7 +46,7 @@ export class Profile {
   faculty: string;
 
   @Column({ nullable: true })
-  course?: string;
+  courseId?: string;
 
   @Column({ nullable: true })
   institutionName?: string;

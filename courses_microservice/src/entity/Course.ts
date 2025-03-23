@@ -12,9 +12,6 @@ export class Course {
   id: string;
 
   @Column()
-  userId: string; // This links the course to the user who created it
-
-  @Column()
   title: string; // Course title (e.g., "Software Engineering")
 
   @Column({ nullable: true })

@@ -4,7 +4,7 @@ export class UpdateProfileDto {
   userId: string;
   role?: UserRole;
   department?: string;
-  course?: string;
+  courseId?: string;
   yearOfStudy?: number;
   faculty?: string;
   address?: string;

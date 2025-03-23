@@ -24,7 +24,7 @@ export class CreateProfileDto {
 
   institutionName?: string;
 
-  course?: string;
+  courseId?: string;
 
   faculty?: string;
 
