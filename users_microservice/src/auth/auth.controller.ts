@@ -33,6 +33,11 @@ export class AuthController {
     }
   }
 
+  @MessagePattern({ cmd: 'logout' })
+  async logout() {
+    return await this.authService.logout();
+  }
+
   @UseGuards(JwtAuthGuard)
   @Post('protected')
   async protectedRoute(@Request() req) {

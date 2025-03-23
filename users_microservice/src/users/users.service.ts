@@ -1,4 +1,9 @@
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/User';
 import { Repository } from 'typeorm';
@@ -14,13 +19,18 @@ export class UsersService {
   ) {}
 
   async createUser(user: CreateUserDto) {
-    // Check if user already exists
     const existingUser = await this.usersRepository.findOne({
       where: { email: user.email },
     });
 
     if (existingUser) {
-      throw new ConflictException('User with this email already exists');
+      throw new HttpException(
+        {
+          status: HttpStatus.CONFLICT,
+          error: 'User with this email already exists',
+        },
+        HttpStatus.CONFLICT,
+      );
     }
 
     // Generate salt and hash password

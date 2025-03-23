@@ -25,4 +25,8 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
+
+  async logout() {
+    // Example: Clear session storage or token data if needed
+  }
 }
