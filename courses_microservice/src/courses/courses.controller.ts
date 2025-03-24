@@ -42,7 +42,15 @@ export class CoursesController {
   // Route for adding units to a course
   @MessagePattern({ cmd: 'add_units_to_course' })
   async addUnitsToCourse(@Payload() payload: CreateCourseUnitsDto) {
-    return this.coursesService.addUnitsToCourse(payload.courseId, payload.unitIds);
+    return this.coursesService.addUnitsToCourse(
+      payload.courseId,
+      payload.unitIds,
+    );
+  }
+
+  @MessagePattern({ cmd: 'get_courses_by_ids' })
+  async getCoursesByIds(@Payload() payload: { courseIds: string[] }) {
+    return this.coursesService.findCoursesByIds(payload.courseIds);
   }
 
   //   faculty routes
@@ -88,9 +96,7 @@ export class CoursesController {
   }
 
   @MessagePattern({ cmd: 'update_department' })
-  updateDepartment(
-    @Payload() payload: any,
-  ) {
+  updateDepartment(@Payload() payload: any) {
     console.log(payload);
     return this.coursesService.updateDepartment(payload.id, payload);
   }
@@ -99,7 +105,6 @@ export class CoursesController {
   deleteDepartment(@Payload() payload: { id: string }) {
     return this.coursesService.removeDepartment(payload.id);
   }
-
 
   // Units CRUD
   @MessagePattern({ cmd: 'create_unit' })

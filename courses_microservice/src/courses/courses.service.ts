@@ -74,6 +74,10 @@ export class CoursesService {
     return this.courseRepository.save(course);
   }
 
+  async findCoursesByIds(ids: string[]) {
+    return this.courseRepository.findByIds(ids);
+  }
+
   //faculty routes
   async createFaculty(createFacultyDto: CreateFacultyDto): Promise<Faculty> {
     const faculty = this.facultyRepository.create(createFacultyDto);

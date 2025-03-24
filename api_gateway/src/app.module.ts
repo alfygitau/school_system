@@ -14,6 +14,10 @@ import { DepartmentsModule } from './departments/departments.module';
 import { DepartmentsController } from './departments/departments.controller';
 import { UnitsModule } from './unit/units.module';
 import { UnitsController } from './unit/units.controller';
+import { AdmissionsModule } from './admissions/admissions.module';
+import { AdmissionsController } from './admissions/admissions.controller';
+import { ExamsController } from './exam/exams.controller';
+import { ExamsModule } from './exam/exams.module';
 
 @Module({
   imports: [
@@ -25,6 +29,8 @@ import { UnitsController } from './unit/units.controller';
     FacultyModule,
     DepartmentsModule,
     UnitsModule,
+    AdmissionsModule,
+    ExamsModule,
   ],
   controllers: [
     UsersController,
@@ -34,6 +40,8 @@ import { UnitsController } from './unit/units.controller';
     FacultyController,
     DepartmentsController,
     UnitsController,
+    AdmissionsController,
+    ExamsController,
   ],
   providers: [],
 })

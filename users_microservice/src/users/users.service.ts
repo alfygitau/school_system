@@ -81,4 +81,8 @@ export class UsersService {
       throw new RpcException('Failed to get user');
     }
   }
+
+  async findStudentsByIds(ids: string[]) {
+    return this.usersRepository.findByIds(ids);
+  }
 }

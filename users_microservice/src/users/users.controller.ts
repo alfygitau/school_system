@@ -46,4 +46,9 @@ export class UsersMicroserviceController {
   async deleteUser(@Payload() data: { id: string }) {
     return this.usersService.deleteUser(data.id);
   }
+
+  @MessagePattern({ cmd: 'get_students_by_ids' })
+  async getStudentsByIds(@Payload() payload: { studentIds: string[] }) {
+    return this.usersService.findStudentsByIds(payload.studentIds);
+  }
 }

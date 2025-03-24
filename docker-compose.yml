@@ -57,6 +57,34 @@ services:
       - microservices_network
     restart: unless-stopped
 
+  admission_microservice:
+    build: ./admission_microservice
+    volumes:
+      - ./admission_microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - DATABASE_URL=postgres://testuser:testuser123@postgres_db:5432/admission_db
+    depends_on:
+      - nats
+      - postgres_db
+    networks:
+      - microservices_network
+    restart: unless-stopped
+
+  exam_microservice:
+    build: ./exam_microservice
+    volumes:
+      - ./exam_microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - DATABASE_URL=postgres://testuser:testuser123@postgres_db:5432/exam_db
+    depends_on:
+      - nats
+      - postgres_db
+    networks:
+      - microservices_network
+    restart: unless-stopped
+
   nats:
     image: nats
     ports:

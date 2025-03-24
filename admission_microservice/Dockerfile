@@ -7,4 +7,6 @@ COPY package-lock.json ./
 
 RUN npm install --legacy-peer-deps
 
+RUN npm i bcrypt --unsafe-perm=true --allow-root --save --legacy-peer-deps
+
 COPY . .
