@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { NatsClientModule } from './nats-client/nats-client.module';
 import { UsersController } from './users/users.controller';
@@ -18,6 +18,8 @@ import { AdmissionsModule } from './admissions/admissions.module';
 import { AdmissionsController } from './admissions/admissions.controller';
 import { ExamsController } from './exam/exams.controller';
 import { ExamsModule } from './exam/exams.module';
+import { LoggerService } from './logger/logger.service';
+import { RequestLoggerMiddleware } from './logger/logger.middleware';
 
 @Module({
   imports: [
@@ -43,6 +45,11 @@ import { ExamsModule } from './exam/exams.module';
     AdmissionsController,
     ExamsController,
   ],
-  providers: [],
+  providers: [LoggerService],
+  exports: [LoggerService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestLoggerMiddleware).forRoutes('*');
+  }
+}
