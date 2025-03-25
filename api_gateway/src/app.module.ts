@@ -20,6 +20,12 @@ import { ExamsController } from './exam/exams.controller';
 import { ExamsModule } from './exam/exams.module';
 import { LoggerService } from './logger/logger.service';
 import { RequestLoggerMiddleware } from './logger/logger.middleware';
+import { ResultsController } from './result/results.controller';
+import { ResultsModule } from './result/results.module';
+import { GradeModule } from './grade/grade.module';
+import { GradeController } from './grade/grade.controller';
+import { BillingController } from './billing/billing.controller';
+import { BillingModule } from './billing/billing.module';
 
 @Module({
   imports: [
@@ -33,6 +39,9 @@ import { RequestLoggerMiddleware } from './logger/logger.middleware';
     UnitsModule,
     AdmissionsModule,
     ExamsModule,
+    ResultsModule,
+    GradeModule,
+    BillingModule,
   ],
   controllers: [
     UsersController,
@@ -44,6 +53,9 @@ import { RequestLoggerMiddleware } from './logger/logger.middleware';
     UnitsController,
     AdmissionsController,
     ExamsController,
+    ResultsController,
+    GradeController,
+    BillingController,
   ],
   providers: [LoggerService],
   exports: [LoggerService],

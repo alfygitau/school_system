@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Exam } from './entity/Exam';
 import { Result } from './entity/Result';
 import { Grade } from './entity/Grade';
+import { ExamsService } from './exam/exams.service';
 
 @Module({
   imports: [

@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Exam } from './Exam';
 import { Grade } from './Grade';
@@ -15,28 +16,29 @@ export class Result {
   id: string;
 
   @Column()
-  studentId: string; // ID of the student (from Users Microservice)
+  studentId: string;
 
-  @ManyToOne(() => Exam, (exam) => exam.results, { eager: true })
-  exam: Exam; // Linked Exam entity
-
-  @Column()
-  courseId: string; // ID of the course (from Courses Microservice)
+  @ManyToOne(() => Exam, (exam) => exam.results)
+  @JoinColumn({ name: 'examId' })
+  exam: Exam;
 
   @Column()
-  unitId: string; // ID of the unit (from Courses Microservice)
+  courseId: string;
+
+  @Column()
+  unitId: string;
 
   @Column({ type: 'float' })
-  score: number; // Student's score in the exam
+  score: number;
 
   @ManyToOne(() => Grade, (grade) => grade.examResults, {
     eager: true,
     nullable: true,
   })
-  grade: Grade; // Linked Grade entity
+  grade: Grade;
 
   @Column({ default: false })
-  isFinalized: boolean; // Whether the result is finalized
+  isFinalized: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
