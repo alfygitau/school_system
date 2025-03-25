@@ -46,7 +46,6 @@ export class BillingController {
 
   @MessagePattern({ cmd: 'get_outstanding_balances' })
   async getOutstandingBalances(@Payload() studentId: string) {
-    console.log(studentId);
     return this.invoiceService
       .findInvoiceByStudent(studentId)
       .then((invoices) =>
