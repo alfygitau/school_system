@@ -6,6 +6,7 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
 } from 'typeorm';
 import { Hostel } from './Hostel';
 import { Booking } from './Booking';
@@ -19,12 +20,16 @@ export class Room {
   roomNumber: string; // Unique room number
 
   @Column()
+  price: number;
+
+  @Column()
   type: string; // e.g., Single, Double, Shared
 
   @Column({ default: true })
   isAvailable: boolean; // Whether the room is available
 
   @ManyToOne(() => Hostel, (hostel) => hostel.rooms)
+  @JoinColumn({ name: 'hostelId' })
   hostel: Hostel;
 
   @OneToMany(() => Booking, (booking) => booking.room)

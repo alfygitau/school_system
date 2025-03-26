@@ -26,6 +26,12 @@ import { GradeModule } from './grade/grade.module';
 import { GradeController } from './grade/grade.controller';
 import { BillingController } from './billing/billing.controller';
 import { BillingModule } from './billing/billing.module';
+import { AccomodationModule } from './accomodation/accomodation.module';
+import { AccomodationController } from './accomodation/accomodation.controller';
+import { RoomsModule } from './room/rooms.module';
+import { RoomsController } from './room/rooms.controller';
+import { BookingController } from './booking/booking.controller';
+import { BookingModule } from './booking/booking.module';
 
 @Module({
   imports: [
@@ -42,6 +48,9 @@ import { BillingModule } from './billing/billing.module';
     ResultsModule,
     GradeModule,
     BillingModule,
+    AccomodationModule,
+    RoomsModule,
+    BookingModule,
   ],
   controllers: [
     UsersController,
@@ -56,6 +65,9 @@ import { BillingModule } from './billing/billing.module';
     ResultsController,
     GradeController,
     BillingController,
+    AccomodationController,
+    RoomsController,
+    BookingController,
   ],
   providers: [LoggerService],
   exports: [LoggerService],
