@@ -39,12 +39,22 @@ export class UsersService {
 
     // Create and save user
     const createdUser = this.usersRepository.create(user);
-    return this.usersRepository.save(createdUser);
+    const savedUser = await this.usersRepository.save(createdUser);
+
+    // Remove password from the response
+    const { password, ...userWithoutPassword } = savedUser;
+
+    return userWithoutPassword;
   }
 
   async getAllUsers() {
     try {
-      return await this.usersRepository.find();
+      const users = await this.usersRepository.find();
+
+      // Remove passwords from all users
+      return users.map(
+        ({ password, ...userWithoutPassword }) => userWithoutPassword,
+      );
     } catch (error) {
       throw new InternalServerErrorException(
         'Failed to fetch users from microservice',
@@ -58,7 +68,13 @@ export class UsersService {
 
   async getUserById(id: string) {
     try {
-      return await this.usersRepository.findOne({ where: { id } });
+      const user = await this.usersRepository.findOne({ where: { id } });
+
+      if (!user) {
+        throw new RpcException('User not found');
+      }
+      const { password, ...userWithoutPassword } = user;
+      return userWithoutPassword;
     } catch (error) {
       throw new RpcException('Failed to get user');
     }

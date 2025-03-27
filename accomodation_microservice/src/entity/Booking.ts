@@ -21,9 +21,6 @@ export class Booking {
   @JoinColumn({ name: 'roomId' })
   room: Room;
 
-  @Column({ nullable: false })
-  roomId: string;
-
   @Column({ type: 'date' })
   startDate: Date; // Booking start date
 

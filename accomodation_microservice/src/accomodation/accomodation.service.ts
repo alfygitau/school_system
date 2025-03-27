@@ -6,12 +6,15 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateBookingDto } from 'src/dtos/CreateBooking.dto';
 import { CreateHostelDto } from 'src/dtos/CreateHostel.dto';
+import { CreateMaintenanceDto } from 'src/dtos/CreateMaintenance.dto';
 import { CreateRoomDto } from 'src/dtos/CreateRoom.dto';
 import { UpdateBookingDto } from 'src/dtos/UpdateBooking.dto';
 import { UpdateHostelDto } from 'src/dtos/UpdateHostel.dto';
+import { UpdateMaintenanceDto } from 'src/dtos/UpdateMaintenance.dto';
 import { UpdateRoomDto } from 'src/dtos/UpdateRoom';
 import { Booking } from 'src/entity/Booking';
 import { Hostel } from 'src/entity/Hostel';
+import { MaintenanceRequest } from 'src/entity/Maintenance';
 import { Room } from 'src/entity/Room';
 import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 
@@ -24,6 +27,8 @@ export class AccomodationService {
     private readonly roomRepository: Repository<Room>,
     @InjectRepository(Booking)
     private readonly bookingRepository: Repository<Booking>,
+    @InjectRepository(MaintenanceRequest)
+    private maintenanceRepository: Repository<MaintenanceRequest>,
   ) {}
 
   async create(createHostelDto: CreateHostelDto): Promise<Hostel> {
@@ -143,11 +148,9 @@ export class AccomodationService {
     }
 
     // Fix: Explicitly set roomId
-    console.log(room.id);
     const booking = this.bookingRepository.create({
       studentId,
       room,
-      roomId: room.id, 
       startDate,
       endDate,
       status: 'active',
@@ -199,5 +202,58 @@ export class AccomodationService {
     return {
       message: 'Booking deleted successfully',
     };
+  }
+
+  // 📌 Create a maintenance request
+  async createMaintenanceRequest(
+    dto: CreateMaintenanceDto,
+  ): Promise<MaintenanceRequest> {
+    const room = await this.roomRepository.findOne({
+      where: { id: dto.roomId },
+    });
+    if (!room) {
+      throw new NotFoundException('Room not found');
+    }
+
+    const request = this.maintenanceRepository.create({
+      studentId: dto.studentId,
+      room,
+      issueDescription: dto.issueDescription,
+      status: 'pending',
+    });
+
+    return this.maintenanceRepository.save(request);
+  }
+
+  // 📌 Get all maintenance requests
+  async findAllMaintenanceRequests(): Promise<MaintenanceRequest[]> {
+    return this.maintenanceRepository.find();
+  }
+
+  // 📌 Get a single maintenance request
+  async findOneMaintenanceRequest(id: string): Promise<MaintenanceRequest> {
+    const request = await this.maintenanceRepository.findOne({ where: { id } });
+    if (!request) {
+      throw new NotFoundException('Maintenance request not found');
+    }
+    return request;
+  }
+
+  // 📌 Update a maintenance request
+  async updateMaintenanceRequest(
+    id: string,
+    dto: UpdateMaintenanceDto,
+  ): Promise<MaintenanceRequest> {
+    const request = await this.findOne(id);
+    Object.assign(request, dto);
+    return this.maintenanceRepository.save(request);
+  }
+
+  // 📌 Delete a maintenance request
+  async deleteMaintenanceRequest(id: string): Promise<void> {
+    const result = await this.maintenanceRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException('Maintenance request not found');
+    }
   }
 }

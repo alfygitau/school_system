@@ -32,6 +32,8 @@ import { RoomsModule } from './room/rooms.module';
 import { RoomsController } from './room/rooms.controller';
 import { BookingController } from './booking/booking.controller';
 import { BookingModule } from './booking/booking.module';
+import { MaintenanceController } from './maintenance/maintenance.controller';
+import { MaintenanceModule } from './maintenance/maintenance.module';
 
 @Module({
   imports: [
@@ -51,6 +53,7 @@ import { BookingModule } from './booking/booking.module';
     AccomodationModule,
     RoomsModule,
     BookingModule,
+    MaintenanceModule,
   ],
   controllers: [
     UsersController,
@@ -68,6 +71,7 @@ import { BookingModule } from './booking/booking.module';
     AccomodationController,
     RoomsController,
     BookingController,
+    MaintenanceController,
   ],
   providers: [LoggerService],
   exports: [LoggerService],

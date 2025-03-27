@@ -7,13 +7,16 @@ import { UpdateRoomDto } from 'src/dtos/UpdateRoom';
 import { CreateRoomDto } from 'src/dtos/CreateRoom.dto';
 import { CreateBookingDto } from 'src/dtos/CreateBooking.dto';
 import { UpdateBookingDto } from 'src/dtos/UpdateBooking.dto';
+import { Hostel } from 'src/entity/Hostel';
+import { UpdateMaintenanceDto } from 'src/dtos/UpdateMaintenance.dto';
+import { CreateMaintenanceDto } from 'src/dtos/CreateMaintenance.dto';
 
 @Controller()
 export class AccomodationMicroserviceController {
   constructor(private readonly accomodationService: AccomodationService) {}
 
   @MessagePattern({ cmd: 'create_hostel' })
-  async create(@Payload() createHostelDto: CreateHostelDto) {
+  async create(@Payload() createHostelDto: CreateHostelDto): Promise<Hostel> {
     return this.accomodationService.create(createHostelDto);
   }
 
@@ -89,5 +92,37 @@ export class AccomodationMicroserviceController {
   @MessagePattern({ cmd: 'delete_booking' })
   async deleteBooking(@Payload() id: string) {
     return this.accomodationService.deleteBooking(id);
+  }
+
+  // 🛠 Create Maintenance Request
+  @MessagePattern('maintenance.create')
+  async createMaintenanceRequest(@Payload() dto: CreateMaintenanceDto) {
+    return this.accomodationService.createMaintenanceRequest(dto);
+  }
+
+  // 🔍 Get All Maintenance Requests
+  @MessagePattern('maintenance.getAll')
+  async findAllMaintenanceRequests() {
+    return this.accomodationService.findAllMaintenanceRequests();
+  }
+
+  // 🔍 Get Single Maintenance Request
+  @MessagePattern('maintenance.getOne')
+  async findOneMaintenanceRequest(@Payload() id: string) {
+    return this.accomodationService.findOneMaintenanceRequest(id);
+  }
+
+  // 🔄 Update Maintenance Request
+  @MessagePattern('maintenance.update')
+  async updateMaintenanceRequest(
+    @Payload() data: { id: string; dto: UpdateMaintenanceDto },
+  ) {
+    return this.accomodationService.updateMaintenanceRequest(data.id, data.dto);
+  }
+
+  // ❌ Delete Maintenance Request
+  @MessagePattern('maintenance.delete')
+  async deleteMaintenanceRequest(@Payload() id: string) {
+    return this.accomodationService.deleteMaintenanceRequest(id);
   }
 }
