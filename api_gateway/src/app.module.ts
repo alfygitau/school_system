@@ -36,6 +36,8 @@ import { MaintenanceController } from './maintenance/maintenance.controller';
 import { MaintenanceModule } from './maintenance/maintenance.module';
 import { EContentModule } from './econtent/econtent.module';
 import { EContentController } from './econtent/econtent.controller';
+import { StorageController } from './storage/storage.controller';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -57,6 +59,7 @@ import { EContentController } from './econtent/econtent.controller';
     BookingModule,
     MaintenanceModule,
     EContentModule,
+    StorageModule,
   ],
   controllers: [
     UsersController,
@@ -76,6 +79,7 @@ import { EContentController } from './econtent/econtent.controller';
     BookingController,
     MaintenanceController,
     EContentController,
+    StorageController,
   ],
   providers: [LoggerService],
   exports: [LoggerService],

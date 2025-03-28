@@ -127,6 +127,17 @@ services:
       - microservices_network
     restart: unless-stopped
 
+  storage_microservice:
+    build: ./storage_microservice
+    volumes:
+      - ./storage_microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    depends_on:
+      - nats
+    networks:
+      - microservices_network
+    restart: unless-stopped
+
   nats:
     image: nats
     ports:
