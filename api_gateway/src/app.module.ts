@@ -34,6 +34,8 @@ import { BookingController } from './booking/booking.controller';
 import { BookingModule } from './booking/booking.module';
 import { MaintenanceController } from './maintenance/maintenance.controller';
 import { MaintenanceModule } from './maintenance/maintenance.module';
+import { EContentModule } from './econtent/econtent.module';
+import { EContentController } from './econtent/econtent.controller';
 
 @Module({
   imports: [
@@ -54,6 +56,7 @@ import { MaintenanceModule } from './maintenance/maintenance.module';
     RoomsModule,
     BookingModule,
     MaintenanceModule,
+    EContentModule,
   ],
   controllers: [
     UsersController,
@@ -72,6 +75,7 @@ import { MaintenanceModule } from './maintenance/maintenance.module';
     RoomsController,
     BookingController,
     MaintenanceController,
+    EContentController,
   ],
   providers: [LoggerService],
   exports: [LoggerService],
