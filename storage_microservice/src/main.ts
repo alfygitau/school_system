@@ -14,6 +14,7 @@ async function bootstrap() {
     },
   );
   app.useGlobalFilters(new AllExceptionFilter());
+  console.log('Storage microservice running...');
   await app.listen();
 }
 bootstrap();

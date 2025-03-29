@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Address } from './Address';
 
 export enum UserRole {
   STUDENT = 'student',
@@ -53,6 +55,9 @@ export class Profile {
 
   @Column({ nullable: true, type: 'text' })
   bio: string;
+
+  @OneToMany(() => Address, (address) => address.profile, { cascade: true })
+  addresses: Address[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -38,6 +38,10 @@ import { EContentModule } from './econtent/econtent.module';
 import { EContentController } from './econtent/econtent.controller';
 import { StorageController } from './storage/storage.controller';
 import { StorageModule } from './storage/storage.module';
+import { NewsModule } from './news/news.module';
+import { NewsController } from './news/news.controller';
+import { AddressController } from './address/address.controller';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -60,6 +64,8 @@ import { StorageModule } from './storage/storage.module';
     MaintenanceModule,
     EContentModule,
     StorageModule,
+    NewsModule,
+    AddressModule,
   ],
   controllers: [
     UsersController,
@@ -80,6 +86,8 @@ import { StorageModule } from './storage/storage.module';
     MaintenanceController,
     EContentController,
     StorageController,
+    NewsController,
+    AddressController,
   ],
   providers: [LoggerService],
   exports: [LoggerService],

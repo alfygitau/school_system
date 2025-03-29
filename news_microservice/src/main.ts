@@ -14,7 +14,7 @@ async function bootstrap() {
     },
   );
   app.useGlobalFilters(new AllExceptionFilter());
-  console.log('🚀 Accomodation Microservice is listening...');
+  console.log('🚀 News Microservice is listening...');
   await app.listen();
 }
 bootstrap();

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { NatsClientModule } from './nats-client/nats-client.module';
-import { ProfileModule } from './profile/profile.module';
-import { Profile } from './entities/Profile';
-import { Address } from './entities/Address';
+import { News } from './entity/News';
+import { Notice } from './entity/Notice';
+import { NewsModule } from './news/news.module';
+import { NewsController } from './news/news.controller';
 
 @Module({
   imports: [
@@ -11,16 +11,15 @@ import { Address } from './entities/Address';
       type: 'postgres',
       host: 'postgres_db',
       port: 5432,
-      entities: [Profile, Address],
-      database: 'profile_db',
+      entities: [News, Notice],
+      database: 'news_db',
       synchronize: true,
       username: 'testuser',
       password: 'testuser123',
     }),
-    NatsClientModule,
-    ProfileModule,
+    NewsModule,
   ],
-  controllers: [],
+  controllers: [NewsController],
   providers: [],
 })
 export class AppModule {}

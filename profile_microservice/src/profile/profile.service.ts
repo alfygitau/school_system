@@ -7,8 +7,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateAddressDto } from 'src/dtos/CreateAddress.dto';
 import { CreateProfileDto } from 'src/dtos/CreateProfile.dto';
+import { UpdateAddressDto } from 'src/dtos/UpdateAddress.dto';
 import { UpdateProfileDto } from 'src/dtos/UpdateProfile.dto';
+import { Address } from 'src/entities/Address';
 import { Profile } from 'src/entities/Profile';
 import { Repository } from 'typeorm';
 
@@ -17,6 +20,7 @@ export class ProfileService {
   constructor(
     @InjectRepository(Profile)
     private readonly profileRepository: Repository<Profile>,
+    @InjectRepository(Address) private addressRepository: Repository<Address>,
   ) {}
 
   async createProfile(payload: CreateProfileDto): Promise<Profile> {
@@ -84,5 +88,41 @@ export class ProfileService {
     } catch (error) {
       throw new InternalServerErrorException('Failed to delete profile');
     }
+  }
+
+  // address
+  async createAddress(
+    profileId: string,
+    data: CreateAddressDto,
+  ): Promise<Address> {
+    const address = this.addressRepository.create({
+      ...data,
+      profile: { id: profileId },
+    });
+    return await this.addressRepository.save(address);
+  }
+
+  async getAllAddresses(): Promise<Address[]> {
+    return await this.addressRepository.find({ relations: ['profile'] });
+  }
+
+  async getAddressById(id: string): Promise<Address> {
+    const address = await this.addressRepository.findOne({
+      where: { id },
+      relations: ['profile'],
+    });
+    if (!address) throw new NotFoundException('Address not found');
+    return address;
+  }
+
+  async updateAddress(id: string, data: UpdateAddressDto): Promise<Address> {
+    await this.addressRepository.update(id, data);
+    return this.getAddressById(id);
+  }
+
+  async deleteAddress(id: string) {
+    const address = await this.getAddressById(id);
+    await this.addressRepository.remove(address);
+    return { message: 'Address deleted successfully' };
   }
 }

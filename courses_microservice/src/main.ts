@@ -14,6 +14,7 @@ async function bootstrap() {
     },
   );
   app.useGlobalFilters(new AllExceptionFilter());
+  console.log('🚀 Courses Microservice is listening...');
   await app.listen();
 }
 bootstrap();
