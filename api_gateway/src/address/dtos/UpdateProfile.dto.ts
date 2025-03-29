@@ -1,4 +1,9 @@
-import { UserRole } from 'src/entities/Profile';
+export enum UserRole {
+  STUDENT = 'student',
+  LECTURER = 'lecturer',
+  PARENT = 'parent',
+  ADMIN = 'admin',
+}
 
 export class UpdateProfileDto {
   userId: string;

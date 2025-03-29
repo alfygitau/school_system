@@ -1,5 +1,11 @@
 import { IsEnum, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
-import { UserRole } from '../entities/Profile';
+
+export enum UserRole {
+  STUDENT = 'student',
+  LECTURER = 'lecturer',
+  PARENT = 'parent',
+  ADMIN = 'admin',
+}
 
 export class CreateProfileDto {
   @IsUUID()
