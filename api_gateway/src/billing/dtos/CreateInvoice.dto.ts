@@ -9,6 +9,9 @@ export class CreateInvoiceDto {
   @IsNotEmpty()
   totalAmount: number;
 
+  @IsNotEmpty()
+  invoiceTitle: string;
+
   @IsDateString()
   @IsNotEmpty()
   dueDate: string;

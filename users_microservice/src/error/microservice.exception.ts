@@ -29,6 +29,7 @@ export class AllExceptionFilter extends BaseRpcExceptionFilter {
       // Handle other unhandled exceptions
       response.message = typeof exception.message === 'string' ? exception.message : JSON.stringify(exception.message);
     }
+    
 
     // Return an Observable error
     return throwError(() => response);

@@ -16,7 +16,15 @@ export class Payment {
   @Column()
   invoiceId: string; // Reference to invoice
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column('decimal', {
+    precision: 10,
+    scale: 2,
+    default: 0,
+    transformer: {
+      to: (value: number) => value,
+      from: (value: string) => parseFloat(value),
+    },
+  })
   amountPaid: number;
 
   @Column()

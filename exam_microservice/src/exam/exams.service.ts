@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Exam } from 'src/entity/Exam';
 import { Repository } from 'typeorm';
@@ -8,6 +8,8 @@ import { Grade } from 'src/entity/Grade';
 import { CreateResultDto } from './dtos/CreateResult.dto';
 import { Result } from 'src/entity/Result';
 import { UpdateResultDto } from './dtos/UpdateResult.dto';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class ExamsService {
@@ -18,6 +20,7 @@ export class ExamsService {
     private readonly resultRepository: Repository<Result>,
     @InjectRepository(Grade)
     private readonly gradeRepository: Repository<Grade>,
+    @Inject('NATS_SERVICE') private readonly unitClient: ClientProxy,
   ) {}
 
   async createExam(data: CreateExamDto): Promise<Exam> {
@@ -46,10 +49,20 @@ export class ExamsService {
   async createResult(data: CreateResultDto): Promise<Result> {
     const exam = await this.examsRepository.findOne({
       where: { id: data.examId },
+      relations: ['results'], // Ensure exam is fetched with related results if needed
     });
     if (!exam) throw new NotFoundException('Exam not found');
 
-    const result = this.resultRepository.create(data);
+    const grade = data.gradeId
+      ? await this.gradeRepository.findOne({ where: { id: data.gradeId } })
+      : null;
+
+    const result = this.resultRepository.create({
+      ...data,
+      exam: exam,
+      grade: grade || null,
+    });
+
     return this.resultRepository.save(result);
   }
 

@@ -70,6 +70,12 @@ export class BillingController {
     );
   }
 
+  // 📌 Process Payment
+  @Get('payment/:id')
+  async getPaymentsById(@Param('id') id: string) {
+    return firstValueFrom(this.natsClient.send({ cmd: 'get_payments' }, id));
+  }
+
   // 📌 Get Outstanding Balances
   @Get('balance/:studentId')
   async getOutstandingBalance(@Param('studentId') studentId: string) {

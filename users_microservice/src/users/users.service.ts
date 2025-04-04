@@ -19,32 +19,40 @@ export class UsersService {
   ) {}
 
   async createUser(user: CreateUserDto) {
-    const existingUser = await this.usersRepository.findOne({
-      where: { email: user.email },
-    });
+    try {
+      const existingUser = await this.usersRepository.findOne({
+        where: { email: user.email },
+      });
 
-    if (existingUser) {
-      throw new HttpException(
-        {
-          status: HttpStatus.CONFLICT,
-          error: 'User with this email already exists',
-        },
-        HttpStatus.CONFLICT,
-      );
+      if (existingUser) {
+        throw new HttpException(
+          {
+            status: HttpStatus.CONFLICT,
+            error: 'User with this email already exists',
+          },
+          HttpStatus.CONFLICT,
+        );
+      }
+
+      // Generate salt and hash password
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(user.password, salt);
+
+      // Create and save user
+      const createdUser = this.usersRepository.create(user);
+      const savedUser = await this.usersRepository.save(createdUser);
+
+      // Remove password from the response
+      const { password, ...userWithoutPassword } = savedUser;
+
+      return userWithoutPassword;
+    } catch (error) {
+      // Optional: Log or inspect error here
+      console.error('Create user error:', error);
+
+      // Re-throw to be handled by your global error handler
+      throw error;
     }
-
-    // Generate salt and hash password
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt);
-
-    // Create and save user
-    const createdUser = this.usersRepository.create(user);
-    const savedUser = await this.usersRepository.save(createdUser);
-
-    // Remove password from the response
-    const { password, ...userWithoutPassword } = savedUser;
-
-    return userWithoutPassword;
   }
 
   async getAllUsers() {

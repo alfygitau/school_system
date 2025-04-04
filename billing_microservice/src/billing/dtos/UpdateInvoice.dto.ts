@@ -9,6 +9,9 @@ export class UpdateInvoiceDto {
   @IsOptional()
   balance?: number;
 
+  @IsOptional()
+  invoiceTitle?: string;
+
   @IsString()
   @IsIn(['pending', 'paid', 'overdue'])
   @IsOptional()

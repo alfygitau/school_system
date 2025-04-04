@@ -12,4 +12,12 @@ export class CreateExamDto {
   @IsString()
   @IsNotEmpty()
   title: string; // Exam title
+
+  @IsString()
+  @IsNotEmpty()
+  yearOfStudy: string; // Exam title
+
+  @IsString()
+  @IsNotEmpty()
+  semester: string; // Exam title
 }

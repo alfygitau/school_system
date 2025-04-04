@@ -12,7 +12,16 @@ export class Invoice {
   id: string;
 
   @Column()
-  studentId: string; // Reference to student
+  studentId: string;
+
+  @Column({ nullable: true })
+  invoiceTitle: string;
+
+  @Column({ nullable: true })
+  yearOfStudy: string;
+
+  @Column({ nullable: true })
+  semester: string;
 
   @Column('decimal', {
     precision: 10,
@@ -22,7 +31,7 @@ export class Invoice {
       from: (value: string) => parseFloat(value),
     },
   })
-  totalAmount: number; // Total amount due
+  totalAmount: number;
 
   @Column('decimal', {
     precision: 10,
@@ -33,7 +42,7 @@ export class Invoice {
       from: (value: string) => parseFloat(value),
     },
   })
-  amountPaid: number; // Amount already paid
+  amountPaid: number;
 
   @Column('decimal', {
     precision: 10,
@@ -44,12 +53,12 @@ export class Invoice {
       from: (value: string) => parseFloat(value),
     },
   })
-  balance: number; // Outstanding balance
+  balance: number;
 
   @Column({ type: 'date' })
-  dueDate: Date; // Payment deadline
+  dueDate: Date;
 
-  @Column({ default: 'pending' }) // pending, paid, overdue
+  @Column({ default: 'pending' })
   status: string;
 
   @CreateDateColumn()
