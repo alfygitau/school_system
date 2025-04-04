@@ -1,23 +1,28 @@
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class UpdateExamDto {
+  @IsOptional()
   @IsUUID()
   @IsNotEmpty()
-  courseId: string;
+  courseId?: string;
 
+  @IsOptional()
   @IsUUID()
   @IsNotEmpty()
-  unitId: string;
+  unitId?: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  title: string;
+  title?: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  yearOfStudy: string; // Exam title
+  yearOfStudy?: string; // Exam title
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  semester: string; // Exam title
+  semester?: string; // Exam title
 }
