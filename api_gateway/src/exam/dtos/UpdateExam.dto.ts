@@ -19,10 +19,10 @@ export class UpdateExamDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  yearOfStudy?: string; // Exam title
+  yearOfStudy?: string;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  semester?: string; // Exam title
+  semester?: string;
 }
