@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
@@ -25,8 +26,19 @@ export class ProfileController {
   }
 
   @Get()
-  getAllProfiles() {
-    return this.natsClient.send({ cmd: 'get_profiles' }, {});
+  getAllProfiles(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Query('role') role = null,
+  ) {
+    return this.natsClient.send(
+      { cmd: 'get_profiles' },
+      {
+        page: Number(page),
+        limit: Number(limit),
+        role: role,
+      },
+    );
   }
 
   // ✅ Get a single profile by userId

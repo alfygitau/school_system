@@ -39,9 +39,27 @@ export class ProfileService {
     return this.profileRepository.save(profile);
   }
 
-  getAllProfiles() {
+  async getAllProfiles(page: number = 1, limit: number = 10, role?: string) {
     try {
-      return this.profileRepository.find({});
+      const skip = (page - 1) * limit;
+
+      const where: any = {};
+      if (role) {
+        where.role = role;
+      }
+
+      const [data, total] = await this.profileRepository.findAndCount({
+        where,
+        skip,
+        take: limit,
+      });
+
+      return {
+        data,
+        total,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
+      };
     } catch (error) {
       throw new HttpException(
         'Failed to get profiles',

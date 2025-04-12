@@ -21,8 +21,13 @@ export class ProfileMicroserviceController {
   }
 
   @MessagePattern({ cmd: 'get_profiles' })
-  getAllProfiles() {
-    return this.profilesService.getAllProfiles();
+  getAllProfiles(
+    @Payload() payload: { page?: number; limit?: number; role?: string },
+  ) {
+    const page = payload?.page ?? 1;
+    const limit = payload?.limit ?? 10;
+    const role = payload?.role;
+    return this.profilesService.getAllProfiles(page, limit, role);
   }
 
   @MessagePattern({ cmd: 'get_profile' })
